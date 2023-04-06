@@ -5,6 +5,7 @@ import androidx.annotation.NonNull
 import android.os.Bundle
 import android.util.Log
 import com.facebook.FacebookSdk
+import com.facebook.LoggingBehavior
 import com.facebook.appevents.AppEventsLogger
 import com.facebook.GraphRequest
 import com.facebook.GraphResponse
@@ -54,7 +55,9 @@ class FacebookAppEventsPlugin: FlutterPlugin, MethodCallHandler {
       "getAnonymousId" -> handleGetAnonymousId(call, result)
       "logPurchase" -> handlePurchased(call, result)
       "setAdvertiserTracking" -> handleSetAdvertiserTracking(call, result)
-
+      "setAutoInitEnabled" -> handleAutoInitEnabled(call, result)
+      "fullyInitialize" -> handleFullyInitialize(call, result)
+      "setIsDebugEnabled" -> handleSetIsDebugEnabled(call, result)
       else -> result.notImplemented()
     }
   }
@@ -97,12 +100,33 @@ class FacebookAppEventsPlugin: FlutterPlugin, MethodCallHandler {
   private fun handleGetApplicationId(call: MethodCall, result: Result) {
     result.success(appEventsLogger.applicationId)
   }
- private fun handleGetAnonymousId(call: MethodCall, result: Result) {
+  private fun handleGetAnonymousId(call: MethodCall, result: Result) {
     result.success(anonymousId)
   }
-  //not an android implementation as of yet
   private fun handleSetAdvertiserTracking(call: MethodCall, result: Result) {
+    val enabled = call.argument("enabled") as? Boolean;
+    if(enabled != null) {
+      FacebookSdk.setAdvertiserIDCollectionEnabled(enabled);
+    }
     result.success(null);
+  }
+
+  private fun handleAutoInitEnabled(call: MethodCall, result: Result) {
+    val enabled = call.arguments as Boolean
+    FacebookSdk.setAutoInitEnabled(enabled)
+    result.success(null)
+  }
+
+  private fun handleFullyInitialize(call: MethodCall, result: Result) {
+    FacebookSdk.fullyInitialize()
+    result.success(null)
+  }
+
+  private fun handleSetIsDebugEnabled(call: MethodCall, result: Result) {
+    val enabled = call.arguments as Boolean
+    FacebookSdk.setIsDebugEnabled(enabled);
+    FacebookSdk.addLoggingBehavior(LoggingBehavior.APP_EVENTS);
+    result.success(null)
   }
 
   private fun handleLogEvent(call: MethodCall, result: Result) {

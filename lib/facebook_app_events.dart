@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io' show Platform;
 
 import 'package:flutter/services.dart';
 
@@ -302,6 +303,33 @@ class FacebookAppEvents {
     };
 
     return _channel.invokeMethod<void>('setAdvertiserTracking', args);
+  }
+
+  /// Sets the AutoInitEnabled for Android
+  Future<void> setAutoInitEnabled(bool enabled) {
+    if (Platform.isAndroid) {
+      return _channel.invokeMethod<void>('setAutoInitEnabled', enabled);
+    }
+
+    return Future.value();
+  }
+
+  /// Run fullyInitialize for Android
+  Future<void> fullyInitialize() {
+    if (Platform.isAndroid) {
+      return _channel.invokeMethod<void>('fullyInitialize');
+    }
+
+    return Future.value();
+  }
+
+  /// Set Debugging for Android
+  Future<void> setIsDebugEnabled(bool enabled) {
+    if (Platform.isAndroid) {
+      return _channel.invokeMethod<void>('setIsDebugEnabled', enabled);
+    }
+
+    return Future.value();
   }
 
   /// The start of a paid subscription for a product or service you offer.

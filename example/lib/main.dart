@@ -75,6 +75,43 @@ class MyApp extends StatelessWidget {
                   facebookAppEvents.setAdvertiserTracking(enabled: false);
                 },
               ),
+              MaterialButton(
+                child: Text("Enable Automatically Logged Events!"),
+                onPressed: () {
+                  facebookAppEvents.setAutoLogAppEventsEnabled(true);
+                },
+              ),
+              MaterialButton(
+                child: Text("Disable Automatically Logged Events!"),
+                onPressed: () {
+                  facebookAppEvents.setAutoLogAppEventsEnabled(false);
+                },
+              ),
+              MaterialButton(
+                child: Text("Enable Auto Init!"),
+                onPressed: () async {
+                  await facebookAppEvents.setAutoInitEnabled(true);
+                  await facebookAppEvents.fullyInitialize();
+                },
+              ),
+              MaterialButton(
+                child: Text("Disable Auto Init!"),
+                onPressed: () {
+                  facebookAppEvents.setAutoInitEnabled(false);
+                },
+              ),
+              MaterialButton(
+                child: Text("Enable Collection of Advertiser IDs!"),
+                onPressed: () {
+                  facebookAppEvents.setAdvertiserTracking(enabled: true);
+                },
+              ),
+              MaterialButton(
+                child: Text("Enable Debugging!"),
+                onPressed: () {
+                  facebookAppEvents.setIsDebugEnabled(false);
+                },
+              )
             ],
           ),
         ),
